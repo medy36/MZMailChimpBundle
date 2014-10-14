@@ -284,4 +284,19 @@ class MCList extends HttpClient
     	$data = $this->makeRequest($apiCall, $payload);
     	return json_decode($data);
     }
+    
+    /**
+     * delete segment by id
+     * @parameter segment ID
+     * @return bool
+     */
+    public function staticSegmentDel($id)
+    {
+        $payload = array(
+                'id'    => $this->listId,
+        );
+        $apiCall = 'staticSegmentDel';
+        $result = $this->makeRequest($apiCall, $payload);
+        return $result;
+    }
 }
