@@ -284,4 +284,137 @@ class MCList extends HttpClient
     	$data = $this->makeRequest($apiCall, $payload);
     	return json_decode($data);
     }
+
+    /**
+     * Save a segment against a list for later use. 
+     * @param segment name
+     * @param list id
+     * @return segment id
+     */
+    public function listByIdStaticSegmentAdd($id_list,$name)
+    {
+        $payload = array(
+                        'id'    => $this->setListId($id_list),
+                        'name' => $name,
+        );
+        $apiCall = 'listStaticSegmentAdd';
+        $data = $this->makeRequest($apiCall, $payload);
+        return json_decode($data);
+    }  
+    
+    /**
+     * set list id, by default it takes the id list in the config.yml
+     * @param list id
+     */
+     public function setListId($listId)
+    {
+        $this->listId = $listId;
+    }
+
+    /**
+     * Retrieve all of the Static Segments for a list. 
+     * @param list id
+     * @return array
+     */
+    public function listStaticSegmentsByList($list_Id)
+    {
+        $payload = array(
+                        'id' =>  $this->setListId($list_Id),
+        );
+        $apiCall = 'listStaticSegments';
+
+       ;
+        $data = $this->makeRequest($apiCall, $payload);
+
+        return json_decode($data);
+    }
+
+    /**
+     * Delete a static segment. 
+     * @param segment id
+     * @return bool
+     */
+    public function listStaticSegmentDel($seg_id)
+    {
+        $payload = array(
+                'id'    => $this->listId,
+                'seg_id' => $seg_id,
+
+        );
+        $apiCall = 'listStaticSegmentDel';
+        $data = $this->makeRequest($apiCall, $payload);
+        return $data;
+    }
+
+    /**
+     *  Delete a static segment of a list
+     * @param list id
+     * @param segment id
+     * @return bool
+     */
+    public function listStaticSegmentDelBylist($list_id, $seg_id)
+    {
+        $payload = array(
+                'id'    => $this->setListId($list_id),
+                'seg_id' => $seg_id,
+
+        );
+        $apiCall = 'listStaticSegmentDel';
+        $data = $this->makeRequest($apiCall, $payload);
+        return $data;
+    }
+    
+
+    /**
+      * Resets a static segment - removes all members from the static segment.
+      * @param segment id 
+      * @return bool
+      */
+     public function listStaticSegmentReset($seg_id)
+     {
+         $payload = array(
+                 'id'    => $this->listId,
+                 'seg_id' => $seg_id,
+
+         );
+         $apiCall = 'listStaticSegmentReset';
+         $data = $this->makeRequest($apiCall, $payload);
+         return $data;
+     }
+
+    /**
+     * Remove list members from a static segment
+     * @param segment id
+     * @param emails list
+     * @return bool
+     */
+    public function listStaticSegmentMembersDel($seg_id,$bacth = array())
+    {
+        $payload = array(
+                'id'    => $this->listId,
+                'seg_id' => $seg_id,
+                'bacth' => $batch,
+
+        );
+        $apiCall = 'listStaticSegmentMembersDel';
+        $data = $this->makeRequest($apiCall, $payload);
+        return $data;
+    }
+
+    /**
+     * Retrieve all the lists defined for your user account
+     * @return array
+     */
+    public function lists()
+    {
+        $payload = array();
+        $apiCall = 'lists';
+        $data = $this->makeRequest($apiCall, $payload);
+        foreach($data as $d)
+        {
+            echo $d["total"];
+        }
+
+        return $data;
+    }
 }
